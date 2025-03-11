@@ -6,7 +6,7 @@ public class Bit : MonoBehaviour
 {
 
     SpriteRenderer spriteRenderer;  
-    bool state = false;
+   public bool state = false;
 
     void Start()
     {
