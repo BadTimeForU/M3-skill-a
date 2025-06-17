@@ -1,13 +1,18 @@
+using System;
 using UnityEngine;
+
 
 public class Tank : MonoBehaviour
 {
+
+    [SerializeField] Bullet bullet;
     Vector3 velocity;
     Vector3 direction;
     float speed;
     float horizontal = 0;
     float vertical = 0;
     Vector2 maxScreen, minScreen;
+
 
     void Start()
     {
@@ -20,16 +25,28 @@ public class Tank : MonoBehaviour
 
     void Update()
     {
-        horizontal = -Input.GetAxis("Horizontal") * 0.1f;
+        horizontal = -Input.GetAxis("Horizontal");
         transform.Rotate(0, 0, horizontal);
 
         vertical = Input.GetAxis("Vertical");
-        speed += vertical;
+        speed += vertical * 0.3f;
+        speed = Mathf.Clamp(speed, 0f, 10.0f);
 
         direction = transform.right;
-        velocity = direction *speed * Time.deltaTime;
+        velocity = direction * speed * Time.deltaTime;
         transform.position += velocity;
         BoxingTank();
+        Shoot();
+    }
+
+    private void Shoot()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Bullet CopyOfBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+            CopyOfBullet.Direction = direction;
+        }
+
     }
 
     void BoxingTank()
